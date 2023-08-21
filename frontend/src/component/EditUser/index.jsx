@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { API_URL } from "../../../apiUrl";
 
 const EditUser = ({ userId, formData: initialFormData, onClose }) => {
   const [formData, setFormData] = useState(initialFormData);
@@ -24,7 +23,7 @@ const EditUser = ({ userId, formData: initialFormData, onClose }) => {
         return;
       }
 
-      const updateEndpoint = `${API_URL}updateUsers/${userId}`;
+      const updateEndpoint = `http://localhost:8081/updateUsers/${userId}`;
 
       const response = await axios.put(updateEndpoint, formData);
 
@@ -34,7 +33,7 @@ const EditUser = ({ userId, formData: initialFormData, onClose }) => {
 
       window.location.reload();
 
-      window.alert("Success edit!");
+      window.alert("Success editing!");
     } catch (error) {
       console.error("Error while updating data:", error);
     }

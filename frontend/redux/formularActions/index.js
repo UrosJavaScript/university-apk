@@ -1,5 +1,4 @@
 import axios from "axios";
-import { API_URL } from "../../apiUrl";
 
 // Action types for form submission
 export const SUBMIT_FORM_REQUEST = "SUBMIT_FORM_REQUEST";
@@ -19,8 +18,6 @@ export const UPDATE_FORM_DATA_FAILURE = "UPDATE_FORM_DATA_FAILURE";
 export const DELETE_FORM_DATA_REQUEST = "DELETE_FORM_DATA_REQUEST";
 export const DELETE_FORM_DATA_SUCCESS = "DELETE_FORM_DATA_SUCCESS";
 export const DELETE_FORM_DATA_FAILURE = "DELETE_FORM_DATA_FAILURE";
-
-
 
 // Action creators for form submission
 export const submitFormRequest = () => ({
@@ -78,18 +75,14 @@ export const submitFormAsync = (formData) => async (dispatch) => {
   try {
     dispatch(submitFormRequest());
 
-    const token = localStorage.getItem("jwtToken"); 
+    const token = localStorage.getItem("jwtToken");
 
-    const response = await axios.post(
-      `${API_URL}formData`, 
-      formData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Hello ${token}`,
-        },
-      }
-    );
+    const response = await axios.post('http://localhost:8081/formData', formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Hello ${token}`,
+      },
+    });
 
     localStorage.setItem("formData", JSON.stringify(response.data));
 
@@ -101,11 +94,11 @@ export const submitFormAsync = (formData) => async (dispatch) => {
 
 export const fetchFormData = () => async (dispatch) => {
   try {
-    const token = localStorage.getItem("jwtToken"); 
+    const token = localStorage.getItem("jwtToken");
 
-    const response = await axios.get(`${API_URL}formData`, {
+    const response = await axios.get('http://localhost:8081/formData', {
       headers: {
-        Authorization: `Bearer ${token}`, 
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -117,12 +110,12 @@ export const fetchFormData = () => async (dispatch) => {
 
 export const updateFormDataAsync = (id, formData) => async (dispatch) => {
   try {
-    dispatch(updateFormDataRequest()); 
+    dispatch(updateFormDataRequest());
 
-    const token = localStorage.getItem("jwtToken"); 
+    const token = localStorage.getItem("jwtToken");
 
     const response = await axios.put(
-      `${API_URL}updateFormData/${id}`, 
+      `http://localhost:8081/updateFormData/${id}`,
       formData,
       {
         headers: {
@@ -132,30 +125,30 @@ export const updateFormDataAsync = (id, formData) => async (dispatch) => {
       }
     );
 
-    dispatch(updateFormDataSuccess(response.data)); 
+    dispatch(updateFormDataSuccess(response.data));
 
-    return response.data; 
+    return response.data;
   } catch (error) {
-    dispatch(updateFormDataFailure(error.message)); 
-    throw error; 
+    dispatch(updateFormDataFailure(error.message));
+    throw error;
   }
 };
 
 export const deleteFormDataAsync = (id) => async (dispatch) => {
   try {
-    dispatch(deleteFormDataRequest()); 
+    dispatch(deleteFormDataRequest());
 
-    const token = localStorage.getItem("jwtToken"); 
+    const token = localStorage.getItem("jwtToken");
 
-    await axios.delete(`${API_URL}deleteFormData/${id}`, {
+    await axios.delete(`http://localhost:8081/deleteFormData/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    dispatch(deleteFormDataSuccess()); 
+    dispatch(deleteFormDataSuccess());
   } catch (error) {
-    dispatch(deleteFormDataFailure(error.message)); 
+    dispatch(deleteFormDataFailure(error.message));
     throw error;
   }
 };

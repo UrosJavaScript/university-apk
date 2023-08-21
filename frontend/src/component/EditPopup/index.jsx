@@ -3,8 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 import PropTypes from "prop-types";
-import moment from "moment"; 
-import { API_URL } from "../../../apiUrl";
+import moment from "moment";
 
 const EditPopup = ({ userId, formData: initialFormData, onClose }) => {
   const [formData, setFormData] = useState(initialFormData);
@@ -17,7 +16,6 @@ const EditPopup = ({ userId, formData: initialFormData, onClose }) => {
 
   const handleSave = async () => {
     try {
-     
       const isFormDataChanged =
         formData.name !== initialFormData.name ||
         formData.email !== initialFormData.email ||
@@ -26,23 +24,19 @@ const EditPopup = ({ userId, formData: initialFormData, onClose }) => {
         formData.form_status !== initialFormData.form_status;
 
       if (!isFormDataChanged) {
-        
-        window.alert("Potrebno je editovati polje pre nego što sačuvate.");
+        window.alert("You need to edit the field before saving.");
         return;
       }
 
-     
       const createdAt = moment(formData.created_at);
       const currentTime = moment();
       const timeDifference = currentTime.diff(createdAt);
 
-   
       const duration = moment.duration(timeDifference);
       const hours = duration.hours();
       const minutes = duration.minutes();
       const seconds = duration.seconds();
 
-   
       const waitingTimeValue = moment()
         .startOf("day") // Set the date to today and time to 00:00:00
         .add(hours, "hours")
@@ -52,11 +46,9 @@ const EditPopup = ({ userId, formData: initialFormData, onClose }) => {
 
       formData.waiting_time = waitingTimeValue;
 
-    
       // end
 
-     
-      const updateEndpoint = `${API_URL}updateFormData/${userId}`;
+      const updateEndpoint = `http://localhost:8081/updateFormData/${userId}`;
 
       const response = await axios.put(updateEndpoint, formData);
 
@@ -66,8 +58,7 @@ const EditPopup = ({ userId, formData: initialFormData, onClose }) => {
 
       window.location.reload();
 
-
-      window.alert("Uspešno editovano!");
+      window.alert("Success editing!");
     } catch (error) {
       console.error("Error while updating data:", error);
     }

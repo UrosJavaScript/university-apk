@@ -1,5 +1,4 @@
 import axios from "axios";
-import { API_URL } from "../../apiUrl";
 
 // Action types
 export const REGISTER_USER_REQUEST = "REGISTER_USER_REQUEST";
@@ -98,7 +97,7 @@ export const registerUserAsync = (userData) => async (dispatch) => {
 
     const token = localStorage.getItem("jwtToken");
 
-    const response = await axios.post(`${API_URL}register`, userData, {
+    const response = await axios.post('http://localhost:8081/register', userData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -115,7 +114,7 @@ export const loginUserAsync = (userData) => async (dispatch) => {
   try {
     dispatch(loginUserRequest());
 
-    const response = await axios.post(`${API_URL}login`, userData, {
+    const response = await axios.post('http://localhost:8081/login', userData, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -152,7 +151,7 @@ export const fetchAllUsers = () => async (dispatch) => {
   try {
     const token = localStorage.getItem("jwtToken"); // Fetch the JWT token from local storage
 
-    const response = await axios.get(`${API_URL}allUsers`, {
+    const response = await axios.get('http://localhost:8081/allUsers', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -172,7 +171,7 @@ export const updateAllUsersAsync = (id, updateUsers) => async (dispatch) => {
     const token = localStorage.getItem("jwtToken");
 
     const response = await axios.put(
-      `${API_URL}updateUsers/${id}`,
+      `http://localhost:8081/updateUsers/${id}`,
       updateUsers,
       {
         headers: {
@@ -196,7 +195,7 @@ export const deleteUsersAsync = (id) => async (dispatch) => {
     dispatch(deleteUsersRequest());
 
     const token = localStorage.getItem("jwtToken");
-    await axios.delete(`${API_URL}deleteUsers/${id}`, {
+    await axios.delete(`http://localhost:8081/deleteUsers/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
